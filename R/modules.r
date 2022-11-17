@@ -1,7 +1,5 @@
-.onLoad <- function(libname, pkgname) {
-    .modules <- c()
-    assign(".modules", .modules, envir = parent.env(environment()))
-}
+pkg.env < new.env(parent = emptyenv())
+assign("modules", c(), pkg.env)
 
 system <- function (command, intern = FALSE, ignore.stdout = FALSE, ignore.stderr = FALSE, wait = TRUE, input = NULL, show.output.on.console = TRUE, minimized = FALSE, invisible = TRUE, timeout = 0) 
 {
@@ -29,7 +27,7 @@ system <- function (command, intern = FALSE, ignore.stdout = FALSE, ignore.stder
     }
     if (!wait && !intern) 
         command <- paste(command, "&")
-    command <- paste("module load", paste(.modules, collapse=" "), ";", command)
+    command <- paste("module load", paste(pkg.env$modules, collapse=" "), ";", command)
     .Internal(system(command, intern, timeout))
 }
 
@@ -43,7 +41,7 @@ system <- function (command, intern = FALSE, ignore.stdout = FALSE, ignore.stder
 #' modulesR does not strictly load any modules into the session that R is running in, but instead creates a hidden list of modules you have loaded or unloaded with the package's commands. The system() function is overwritten so that any modules are loaded before the requested command is executed. This is not efficient for a large number of system calls, where modules should be loaded ahead of R if possible.
 #' @export
 module_load <- function(module){
-    .modules <<- c(.modules, module)
+    pkg.env$modules <- c(pkg.env$modules, module)
 }
 
 #' Unload module
@@ -54,10 +52,10 @@ module_load <- function(module){
 #' @author  Chris Field <fieldc@ethz.ch>
 #' @export
 module_unload <- function(module){
-    if(!module%in%.modules){
+    if(!module%in%pkg.env$modules){
         stop(paste(module, "is not loaded"))
     }
-    .modules <<- .modules[.modules!=module]
+    pkg.env$modules <- pkg.env$modules[pkg.env$modules!=module]
 }
 
 #' Unload all modules
@@ -68,7 +66,7 @@ module_unload <- function(module){
 #' @author  Chris Field <fieldc@ethz.ch>
 #' @export
 module_purge <- function(){
-    .modules <<- c()
+    pkg.env$modules <- c()
 }
 
 #' List loaded modules
