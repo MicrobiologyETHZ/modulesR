@@ -1,0 +1,16 @@
+Package: modulesR
+Type: Package
+Title: Package to manage modules for system() calls
+Version: 0.1
+Authors@R:
+    person(given = "Chris",
+           family = "Field",
+           role = c("aut", "cre"),
+           email = "fieldc@ethz.ch")
+Description: This package provides functions to load and unload modules from the system software stack for system() calls
+Depends:
+    R (>= 4.0.0),
+Remotes: MicrobiologyETHZ/modulesR
+License: GPL-3
+Encoding: UTF-8
+RoxygenNote: 7.1.2
