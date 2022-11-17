@@ -1,4 +1,4 @@
-pkg.env < new.env(parent = emptyenv())
+pkg.env <- new.env(parent = emptyenv())
 assign("modules", c(), pkg.env)
 
 system <- function (command, intern = FALSE, ignore.stdout = FALSE, ignore.stderr = FALSE, wait = TRUE, input = NULL, show.output.on.console = TRUE, minimized = FALSE, invisible = TRUE, timeout = 0) 
